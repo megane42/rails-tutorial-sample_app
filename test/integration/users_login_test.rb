@@ -31,6 +31,16 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", login_path
     assert_select "a[href=?]", logout_path, count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
+
+    # consider multiple tabs
+
+    delete logout_path
+    follow_redirect!
+
+    assert_template 'static_pages/home'
+    assert_select "a[href=?]", login_path
+    assert_select "a[href=?]", logout_path, count: 0
+    assert_select "a[href=?]", user_path(@user), count: 0
   end
 
   test "login with invalid information" do

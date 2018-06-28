@@ -27,8 +27,13 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(self.remember_token))
   end
 
+  def forget
+    update_attribute(:remember_digest, nil)
+  end
+
   def authenticated?(token)
-    BCrypt::Password.new(self.remember_digest).is_password?(token)
+    return false if remember_digest.nil?
+    BCrypt::Password.new(remember_digest).is_password?(token)
   end
 
   def self.digest(str)
@@ -39,5 +44,4 @@ class User < ApplicationRecord
   def self.new_token
     SecureRandom.urlsafe_base64
   end
-
 end
