@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :require_login,        only: [:edit, :update]
+  before_action :require_login,        only: [:edit, :update, :index]
   before_action :require_correct_user, only: [:edit, :update]
 
   def show
@@ -35,6 +35,10 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def index
+    @users = User.all
   end
 
   private
