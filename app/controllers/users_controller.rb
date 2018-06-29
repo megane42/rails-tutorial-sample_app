@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
-  before_action :require_login, only: [:edit, :update]
+  before_action :require_login,        only: [:edit, :update]
+  before_action :require_correct_user, only: [:edit, :update]
 
   def show
     @user = User.find(params[:id])
@@ -46,6 +47,12 @@ class UsersController < ApplicationController
     unless logged_in?
       flash[:danger] = 'Please log in.'
       redirect_to login_url
+    end
+  end
+
+  def require_correct_user
+    unless params[:id].to_i == current_user.id.to_i
+      redirect_to root_url
     end
   end
 end
