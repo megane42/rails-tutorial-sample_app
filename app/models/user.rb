@@ -39,6 +39,10 @@ class User < ApplicationRecord
     BCrypt::Password.new(remember_digest).is_password?(token)
   end
 
+  def feed
+    Micropost.where("user_id=?", id)
+  end
+
   def self.digest(str)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(str, cost: cost)
